@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>使用HTTPS与SSL | Android官方培训课程中文版(v0.9.5)</title>
+        <title>使用HTTPS与SSL | Android官方培训课程中文版(v0.9.7)</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="15.2" data-basepath=".." data-revision="1450108925473">
+    <div class="book"  data-level="15.2" data-basepath=".." data-revision="1480839293617">
     
 
 <div class="book-summary">
@@ -5231,7 +5231,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../" >Android官方培训课程中文版(v0.9.5)</a>
+        <a href="../" >Android官方培训课程中文版(v0.9.7)</a>
     </h1>
 </div>
 
@@ -5239,7 +5239,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_208">
+                    <section class="normal" id="section-gitbook_835">
                     
                         <h1 id="httpsssl">使用HTTPS与SSL</h1>
 <blockquote>
@@ -5267,7 +5267,7 @@ copyInputStreamToOutputStream(in, System.out);
 </code></pre>
 <p>是的，它就是这么简单。如果我们想要修改HTTP的请求，可以把它交付给 <a href="http://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank">HttpURLConnection</a>。Android关于<a href="http://developer.android.com/reference/java/net/HttpURLConnection.html" target="_blank">HttpURLConnetcion</a>文档中还有更贴切的关于怎样去处理请求、响应头、posting的内容、cookies管理、使用代理、获取responses等例子。但是就这些确认证书和域名的细节而言，Android框架已经通过API为我们考虑到了这些细节。下面是其他需要关注的问题。</p>
 <h2 id="">服务器普通问题的验证</h2>
-<p>假设从<a href="http://developer.android.com/reference/java/net/URLConnection.html#getInputStream(" target="_blank">getInputStream()</a>接受内容，会抛出一个异常：</p>
+<p>假设没有从<a href="http://developer.android.com/reference/java/net/URLConnection.html#getInputStream(" target="_blank">getInputStream()</a>收到内容，而是抛出了一个异常：</p>
 <pre><code class="lang-java">javax.net.ssl.SSLHandshakeException: java.security.cert.CertPathValidatorException: Trust anchor <span class="hljs-keyword">for</span> certification path not found.
         at org.apache.harmony.xnet.provider.jsse.OpenSSLSocketImpl.startHandshake(OpenSSLSocketImpl.java:<span class="hljs-number">374</span>)
         at libcore.net.http.HttpConnection.setupSecureSocket(HttpConnection.java:<span class="hljs-number">209</span>)

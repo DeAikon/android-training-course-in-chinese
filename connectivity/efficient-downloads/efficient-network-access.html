@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>优化下载以高效地访问网络 | Android官方培训课程中文版(v0.9.5)</title>
+        <title>优化下载以高效地访问网络 | Android官方培训课程中文版(v0.9.7)</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="5.3.1" data-basepath="../.." data-revision="1450108925473">
+    <div class="book"  data-level="5.3.1" data-basepath="../.." data-revision="1480839293617">
     
 
 <div class="book-summary">
@@ -5231,7 +5231,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../../" >Android官方培训课程中文版(v0.9.5)</a>
+        <a href="../../" >Android官方培训课程中文版(v0.9.7)</a>
     </h1>
 </div>
 
@@ -5239,7 +5239,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_89">
+                    <section class="normal" id="section-gitbook_653">
                     
                         <h1 id="">优化下载以高效地访问网络</h1>
 <blockquote>
@@ -5264,7 +5264,7 @@
 <p>这种方法在典型的网页浏览操作上是特别有效的，因为它可以阻止用户在浏览网页时的一些不受欢迎的延迟。相对较短的拖尾时间也保证了当一个网页浏览会话结束的时候，无线电波可以转移到相对较低的能量状态。</p>
 <p>不幸的是，这个方法会导致在现代的智能机系统例如 Android 上的 app 效率低下。因为  Android 上的 app 不仅仅可以在前台运行（重点关注延迟），也可以在后台运行（优先处理耗电量）。(无线电波的状态改变会影响到本来的设计，有些想在前台运行的可能会因为切换到低能量状态而影响程序效率。坊间说手机在电量低的状态下无线电波的强度会增大好几倍来保证信号，可能与这个有关。)</p>
 <h2 id="app-">App 如何影响无线电波状态机</h2>
-<p>每次创建一个新的网络连接，无线电波就切换到 full power 状态。在上面典型的 3G 无线电波状态机情况下，无线电波会在传输数据时保持在 full power 的状态，加上一个附加的5秒拖尾时间，再之后会经过12秒进入到 low power 能量状态。因此对于典型的 3G 设备，每一次数据传输的会话都会导致无线电波消耗大概20秒时间来提取电能。</p>
+<p>每次创建一个新的网络连接，无线电波就切换到 full power 状态。在上面典型的 3G 无线电波状态机情况下，无线电波会在传输数据时保持在 full power 的状态（加上一个附加的5秒拖尾时间），再之后会经过12秒的 low power 能量状态。因此对于典型的 3G 设备，每一次数据传输的会话都会导致无线电波消耗大概20秒时间来提取电能。</p>
 <p>实际上，这意味着一个每18秒传输1秒非捆绑数据（unbundled data）的 app，会一直保持激活状态（18 = 1秒的传输数据 + 5秒过渡时间回到 low power + 12秒过渡时间回到standby）。因此，每分钟会消耗18秒 high power 的电量，42秒 low power 的电量。</p>
 <p>通过比较，同一个 app，每分钟传输持续3秒的捆绑数据（bundle data），会使得无线电波持续在 high power 状态仅仅8秒，在 low power 状态仅仅12秒钟。</p>
 <p>上面第二种传输捆绑数据（bundle data）的例子，可以看到减少了大量的电量消耗。图示如下：</p>

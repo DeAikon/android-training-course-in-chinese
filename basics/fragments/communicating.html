@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>Fragments之间的交互 | Android官方培训课程中文版(v0.9.5)</title>
+        <title>Fragments之间的交互 | Android官方培训课程中文版(v0.9.7)</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="1.5.3" data-basepath="../.." data-revision="1450108925473">
+    <div class="book"  data-level="1.5.3" data-basepath="../.." data-revision="1480839293617">
     
 
 <div class="book-summary">
@@ -5231,7 +5231,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../../" >Android官方培训课程中文版(v0.9.5)</a>
+        <a href="../../" >Android官方培训课程中文版(v0.9.7)</a>
     </h1>
 </div>
 
@@ -5239,27 +5239,22 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_53">
+                    <section class="normal" id="section-gitbook_710">
                     
-                        <h1 id="fragments">Fragments之间的交互</h1>
+                        <h1 id="-fragment-">与其他 Fragment 交互</h1>
 <blockquote>
-<p>编写:<a href="https://github.com/fastcome1985" target="_blank">fastcome1985</a> - 原文:<a href="http://developer.android.com/training/basics/fragments/communicating.html" target="_blank">http://developer.android.com/training/basics/fragments/communicating.html</a></p>
+<p>编写：<a href="https://github.com/fastcome1985" target="_blank">fastcome1985</a> - 原文：<a href="https://developer.android.com/training/basics/fragments/communicating.html" target="_blank">https://developer.android.com/training/basics/fragments/communicating.html</a></p>
 </blockquote>
-<ul>
-<li><p>为了重用Fragment UI组件，我们应该把每一个fragment都构建成完全的自包含的、模块化的组件，定义他们自己的布局与行为。定义好这些模块化的Fragment后，就可以让他们关联activity，使他们与application的逻辑结合起来，实现全局的复合的UI。</p>
-</li>
-<li><p>通常fragment之间可能会需要交互，比如基于用户事件改变fragment的内容。所有fragment之间的交互需要通过他们关联的activity，两个fragment之间不应该直接交互。</p>
-</li>
-</ul>
-<h2 id="">定义一个接口</h2>
-<ul>
-<li>为了让fragment与activity交互，可以在Fragment 类中定义一个接口，并在activity中实现。Fragment在他们生命周期的onAttach()方法中获取接口的实现，然后调用接口的方法来与Activity交互。</li>
-</ul>
-<p>下面是一个fragment与activity交互的例子：</p>
+<p>为了重用 Fragment UI 组件，你应该把每个 Fragment 都构建成完全自包含的、模块化的组件，即，定义它们自己的布局与行为。一旦你定义了这些可重用的 Fragment，你就可以通过应用程序逻辑让它们关联到 Activity，以实现整体的复合 UI。</p>
+<p>通常 Fragment 之间可能会需要交互，比如基于用户事件的内容变更。所有 Fragment 之间的交互应通过与之关联的 Activity 来完成。两个 Fragment 之间不应直接交互。</p>
+<h2 id="">定义接口</h2>
+<p>为了让 Fragment 与包含它的 Activity 进行交互，可以在 Fragment 类中定义一个接口，并在 Activity 中实现。该 Fragment 在它的 onAttach() 方法生命周期中获取该接口的实现，然后调用接口的方法，以便与 Activity 进行交互。（译注：意即，若该 Fragment 中实现了 onAttach() 方法，则会被自动调用。）</p>
+<p>以下是 Fragment 与 Activity 交互的例子：</p>
 <pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">HeadlinesFragment</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">ListFragment</span> </span>{
     OnHeadlineSelectedListener mCallback;
 
-    <span class="hljs-comment">// Container Activity must implement this interface</span>
+    <span class="hljs-comment">// 容器 Activity 必须实现该接口</span>
+    <span class="hljs-comment">// （译注：“容器 Activity”意即“包含该 Fragment 的 Activity”）</span>
     <span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">interface</span> <span class="hljs-title">OnHeadlineSelectedListener</span> </span>{
         <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onArticleSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> position)</span></span>;
     }
@@ -5268,8 +5263,7 @@
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onAttach</span><span class="hljs-params">(Activity activity)</span> </span>{
         <span class="hljs-keyword">super</span>.onAttach(activity);
 
-        <span class="hljs-comment">// This makes sure that the container activity has implemented</span>
-        <span class="hljs-comment">// the callback interface. If not, it throws an exception</span>
+        <span class="hljs-comment">// 确认容器 Activity 已实现该回调接口。否则，抛出异常</span>
         <span class="hljs-keyword">try</span> {
             mCallback = (OnHeadlineSelectedListener) activity;
         } <span class="hljs-keyword">catch</span> (ClassCastException e) {
@@ -5281,62 +5275,50 @@
     ...
 }
 </code></pre>
-<ul>
-<li><p>现在Fragment就可以通过调用<code>OnHeadlineSelectedListener</code>接口实例的<code>mCallback</code>中的<code>onArticleSelected()</code>（也可以是其它方法）方法与activity传递消息。</p>
-</li>
-<li><p>举个例子，在fragment中的下面的方法在用户点击列表条目时被调用，fragment 用回调接口来传递事件给父Activity.</p>
-</li>
-</ul>
-<pre><code class="lang-java"> <span class="hljs-annotation">@Override</span>
+<p>现在 Fragment 可以通过调用 <code>mCallback</code>（<code>OnHeadlineSelectedListener</code> 接口的实例）的 <code>onArticleSelected()</code> 方法（也可以是其它方法）与 Activity 进行消息传递。</p>
+<p>例如，当用户点击列表条目时，Fragment 中的下面的方法将被调用。Fragment 用回调接口将事件传递给父 Activity。</p>
+<pre><code class="lang-java">    <span class="hljs-annotation">@Override</span>
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onListItemClick</span><span class="hljs-params">(ListView l, View v, <span class="hljs-keyword">int</span> position, <span class="hljs-keyword">long</span> id)</span> </span>{
-        <span class="hljs-comment">// Send the event to the host activity</span>
+        <span class="hljs-comment">// 向宿主 Activity 传送事件</span>
         mCallback.onArticleSelected(position);
     }
 </code></pre>
 <h2 id="">实现接口</h2>
-<ul>
-<li><p>为了接收回调事件，宿主activity必须实现在Fragment中定义的接口。</p>
-</li>
-<li><p>举个例子，下面的activity实现了上面例子中的接口。</p>
-</li>
-</ul>
+<p>为了接收回调事件，宿主 Activity 必须实现在 Fragment 中定义的接口。</p>
+<p>例如，下面的 Activity 实现了上面例子中的接口。</p>
 <pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Activity</span>
         <span class="hljs-keyword">implements</span> <span class="hljs-title">HeadlinesFragment</span>.<span class="hljs-title">OnHeadlineSelectedListener</span></span>{
     ...
 
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onArticleSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> position)</span> </span>{
-        <span class="hljs-comment">// The user selected the headline of an article from the HeadlinesFragment</span>
-        <span class="hljs-comment">// Do something here to display that article</span>
+        <span class="hljs-comment">// 用户从 HeadlinesFragment 选择了一篇文章的标题</span>
+        <span class="hljs-comment">// 在这里做点什么，以显示该文章</span>
     }
 }
 </code></pre>
-<h2 id="fragment">传消息给Fragment</h2>
-<ul>
-<li><p>宿主activity通过<a href="http://developer.android.com/reference/android/support/v4/app/FragmentManager.html#findFragmentById(int)">findFragmentById()</a>方法获取<a href="http://developer.android.com/reference/android/support/v4/app/Fragment.html" target="_blank">fragment</a>的实例，然后直接调用Fragment的public方法来向fragment传递消息。</p>
-</li>
-<li><p>例如，假设上面所示的activity可能包含另外一个fragment,这个fragment用来展示从上面的回调方法中返回的指定的数据。在这种情况下，activity可以把从回调方法中接收到的信息传递给这个展示数据的Fragment.</p>
-</li>
-</ul>
+<h2 id="-fragment-">向 Fragment 传递消息</h2>
+<p>宿主 Activity 通过 <a href="http://developer.android.com/reference/android/support/v4/app/FragmentManager.html#findFragmentById(int)" target="_blank">findFragmentById()</a> 获取 <a href="http://developer.android.com/reference/android/support/v4/app/Fragment.html" target="_blank">Fragment</a> 的实例，然后直接调用 Fragment 的 public 方法向 Fragment 传递消息。</p>
+<p>例如，假设上面所示的 Activity 可能包含另一个 Fragment，该 Fragment 用于展示从上面的回调方法中返回的指定的数据。在这种情况下，Activity 可以把从回调方法中接收到的信息传递到这个展示数据的 Fragment。</p>
 <pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">MainActivity</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Activity</span>
         <span class="hljs-keyword">implements</span> <span class="hljs-title">HeadlinesFragment</span>.<span class="hljs-title">OnHeadlineSelectedListener</span></span>{
     ...
 
     <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">onArticleSelected</span><span class="hljs-params">(<span class="hljs-keyword">int</span> position)</span> </span>{
-        <span class="hljs-comment">// The user selected the headline of an article from the HeadlinesFragment</span>
-        <span class="hljs-comment">// Do something here to display that article</span>
+        <span class="hljs-comment">// 用户从 HeadlinesFragment 选择了一篇文章的标题</span>
+        <span class="hljs-comment">// 在这里做点什么，以显示该文章</span>
 
         ArticleFragment articleFrag = (ArticleFragment)
                 getSupportFragmentManager().findFragmentById(R.id.article_fragment);
 
         <span class="hljs-keyword">if</span> (articleFrag != <span class="hljs-keyword">null</span>) {
-            <span class="hljs-comment">// If article frag is available, we're in two-pane layout...</span>
+            <span class="hljs-comment">// 若 articleFrag 有效，则表示我们正在处理两格布局（two-pane layout）……</span>
 
-            <span class="hljs-comment">// Call a method in the ArticleFragment to update its content</span>
+            <span class="hljs-comment">// 调用 ArticleFragment 的方法，以更新其内容</span>
             articleFrag.updateArticleView(position);
         } <span class="hljs-keyword">else</span> {
-            <span class="hljs-comment">// Otherwise, we're in the one-pane layout and must swap frags...</span>
+            <span class="hljs-comment">// 否则，我们正在处理单格布局（one-pane layout）。此时需要 swap frags...</span>
 
-            <span class="hljs-comment">// Create fragment and give it an argument for the selected article</span>
+            <span class="hljs-comment">// 创建 Fragment，向其传递包含被选文章的参数</span>
             ArticleFragment newFragment = <span class="hljs-keyword">new</span> ArticleFragment();
             Bundle args = <span class="hljs-keyword">new</span> Bundle();
             args.putInt(ArticleFragment.ARG_POSITION, position);
@@ -5344,12 +5326,14 @@
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            <span class="hljs-comment">// Replace whatever is in the fragment_container view with this fragment,</span>
-            <span class="hljs-comment">// and add the transaction to the back stack so the user can navigate back</span>
+            <span class="hljs-comment">// 无论 fragment_container 视图里是什么，用该 Fragment 替换它。并将</span>
+            <span class="hljs-comment">// 该事务添加至回栈，以便用户可以往回导航（译注：回栈，即 Back Stack。</span>
+            <span class="hljs-comment">// 在有多个 Activity 的 APP 中，将这些 Activity 按创建次序组织起来的</span>
+            <span class="hljs-comment">// 栈，称为回栈）</span>
             transaction.replace(R.id.fragment_container, newFragment);
             transaction.addToBackStack(<span class="hljs-keyword">null</span>);
 
-            <span class="hljs-comment">// Commit the transaction</span>
+            <span class="hljs-comment">// 执行事务</span>
             transaction.commit();
         }
     }

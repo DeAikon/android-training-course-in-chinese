@@ -4,7 +4,7 @@
     <head>
         
         <meta charset="UTF-8">
-        <title>与UI线程通信 | Android官方培训课程中文版(v0.9.5)</title>
+        <title>与UI线程通信 | Android官方培训课程中文版(v0.9.7)</title>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
         <meta name="description" content="">
         <meta name="generator" content="GitBook 1.0.3">
@@ -33,7 +33,7 @@
 
 
         
-    <div class="book"  data-level="14.5.4" data-basepath="../.." data-revision="1450108925473">
+    <div class="book"  data-level="14.5.4" data-basepath="../.." data-revision="1480839293617">
     
 
 <div class="book-summary">
@@ -5231,7 +5231,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../../" >Android官方培训课程中文版(v0.9.5)</a>
+        <a href="../../" >Android官方培训课程中文版(v0.9.7)</a>
     </h1>
 </div>
 
@@ -5239,7 +5239,7 @@
                 <div class="page-inner">
                 
                 
-                    <section class="normal" id="section-gitbook_198">
+                    <section class="normal" id="section-gitbook_826">
                     
                         <h1 id="ui">与UI线程通信</h1>
 <blockquote>
@@ -5307,7 +5307,7 @@
 }
 ...
 </code></pre>
-<p><em>PhotoTask</em>类还包含一个用于给<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>显示<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>的handler。虽然<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>和<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>ImageView</a>的引用在同一个对象中，但你不能把这个<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>分配给<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>去显示，因为它们并没有运行在UI线程中。</p>
+<p><em>PhotoTask</em>类还包含一个用于显示<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>的<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>的引用。虽然<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>和<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>ImageView</a>的引用在同一个对象中，但你不能把这个<a href="http://developer.android.com/reference/android/graphics/Bitmap.html" target="_blank">Bitmap</a>分配给<a href="http://developer.android.com/reference/android/widget/ImageView.html" target="_blank">ImageView</a>去显示，因为它们并没有运行在UI线程中。</p>
 <p>这时，下一步应该发送这个状态给<code>PhotoTask</code>对象。</p>
 <h3 id="">发送状态取决于对象层次</h3>
 <p><em>PhotoTask</em>是下一个层次更高的对象，它包含将要展示数据的编码数据和<a href="http://developer.android.com/reference/android/view/View.html" target="_blank">View</a>对象的引用。它会收到一个来自<em>PhotoDecodeRunnable</em>的状态码，并把这个状态码单独传递到一个包含线程池和<a href="http://developer.android.com/reference/android/os/Handler.html" target="_blank">Handler</a>实例的对象：</p>
@@ -5343,7 +5343,7 @@
 }
 </code></pre>
 <h3 id="ui">转移数据到UI</h3>
-<p>从<em>PhotoTask</em>对象那里，<em>PhotoManager</em>对象收到了一个状态码和一个<em>PhotoTask</em>对象的handler。因为状态码是<em>TASK_COMPLETE</em>，所以创建一个<a href="http://developer.android.com/reference/android/os/Message.html" target="_blank">Message</a>应该包含状态和任务对象，然后把它发送给<a href="http://developer.android.com/reference/android/os/Handler.html" target="_blank">Handler</a>：</p>
+<p>从<em>PhotoTask</em>对象那里，<em>PhotoManager</em>对象收到了一个状态码和一个<em>PhotoTask</em>对象的引用。因为状态码是<em>TASK_COMPLETE</em>，所以创建一个<a href="http://developer.android.com/reference/android/os/Message.html" target="_blank">Message</a>应该包含状态和任务对象，然后把它发送给<a href="http://developer.android.com/reference/android/os/Handler.html" target="_blank">Handler</a>：</p>
 <pre><code class="lang-java"><span class="hljs-keyword">public</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">PhotoManager</span> </span>{
     ...
     <span class="hljs-comment">// Handle status messages from tasks</span>
